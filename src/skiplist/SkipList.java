@@ -1,8 +1,3 @@
-// Herman Westerman hewe1050
-
-// Samarbete gjordes med Fredrik Engström fren2861
-
-
 import java.util.*;
 
 public class SkipList<T extends Comparable<T>> {
