@@ -6,7 +6,8 @@ public class MyUndirectedGraph<T> implements UndirectedGraph<T> {
 
     private int vertices;
     private int edges;
-    private List<Node<T>> nodeList = new LinkedList<>();
+    private List<Node<T>> nodeList = new ArrayList<>();
+    private Map<T, Integer> nodeListIndex = new HashMap<>();
 
     private static class Node<T> {
         private T data;
@@ -55,55 +56,34 @@ public class MyUndirectedGraph<T> implements UndirectedGraph<T> {
             return false;
         }
 
+        nodeListIndex.put(newNode, vertices);
         vertices++;
         return nodeList.add(new Node<T>(newNode));
     }
 
     @Override
     public boolean connect(T firstNode, T secondNode, int cost) {
-        if (cost <= 0) {
-            return false;
-        }
-
-        boolean nodesExist = existNode(firstNode) && existNode(secondNode);
-
-        boolean isFound = false;
-        for (int i = 0; i < nodeList.size(); i++) {
-            if (nodeList.get(i).data.equals(firstNode)) {
-                if (nodesExist) {
-                    nodeList.get(i).neighbours.put(secondNode, cost);
-                }
+        if (existNode(firstNode) && existNode(secondNode) && cost > 0) {
+            Node<T> node1 = new Node<>(firstNode);
+            if (node1.data.equals(firstNode)) {
+                nodeList.get(nodeListIndex.get(firstNode)).neighbours.put(secondNode, cost);
             }
 
-            if (nodeList.get(i).data.equals(secondNode)) {
-                if (nodesExist) {
-                    nodeList.get(i).neighbours.put(firstNode, cost);
-                    isFound = true;
-                    edges++;
-                }
+            if (nodeList.get(nodeListIndex.get(secondNode)).data.equals(secondNode)) {
+                nodeList.get(nodeListIndex.get(secondNode)).neighbours.put(firstNode, cost);
+                edges++;
             }
+            return true;
         }
-
-        return isFound;
+        return false;
     }
 
     private boolean existNode(T node) {
-        boolean nodeExists = false;
-        for (int j = 0; j < nodeList.size(); j++) {
-            if (nodeList.get(j).data.equals(node)) {
-                nodeExists = true;
-            }
-        }
-        return nodeExists;
+        return nodeListIndex.containsKey(node);
     }
 
     private Node<T> getNode(T node) {
-        for (int j = 0; j < nodeList.size(); j++) {
-            if (nodeList.get(j).data.equals(node)) {
-                return nodeList.get(j);
-            }
-        }
-        return null;
+        return nodeList.get(nodeListIndex.get(node));
     }
 
     @Override
@@ -114,18 +94,12 @@ public class MyUndirectedGraph<T> implements UndirectedGraph<T> {
 
     @Override
     public int getCost(T firstNode, T secondNode) {
-
-        if(!existNode(secondNode)){
-            return -1;
-        }
-        for (int i = 0; i < nodeList.size(); i++) {
-            if (nodeList.get(i).data.equals(firstNode)) {
-                if (nodeList.get(i).neighbours.get(secondNode) == null) {
-                    return -1;
-                }
-                return nodeList.get(i).neighbours.get(secondNode);
+        if (existNode(firstNode) && existNode(secondNode)) {
+            if (nodeList.get(nodeListIndex.get(firstNode)).neighbours.get(secondNode) != null) {
+                return nodeList.get(nodeListIndex.get(firstNode)).neighbours.get(secondNode);
             }
         }
+
         return -1;
     }
 
@@ -243,6 +217,5 @@ public class MyUndirectedGraph<T> implements UndirectedGraph<T> {
 
         return mst;
     }
-    
 }
 
