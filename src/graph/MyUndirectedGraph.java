@@ -64,14 +64,9 @@ public class MyUndirectedGraph<T> implements UndirectedGraph<T> {
     @Override
     public boolean connect(T firstNode, T secondNode, int cost) {
         if (existNode(firstNode) && existNode(secondNode) && cost > 0) {
-            if (nodeList.get(nodeListIndex.get(firstNode)).data.equals(firstNode)) {
-                nodeList.get(nodeListIndex.get(firstNode)).neighbours.put(secondNode, cost);
-            }
-
-            if (nodeList.get(nodeListIndex.get(secondNode)).data.equals(secondNode)) {
-                nodeList.get(nodeListIndex.get(secondNode)).neighbours.put(firstNode, cost);
-                edges++;
-            }
+            nodeList.get(nodeListIndex.get(firstNode)).neighbours.put(secondNode, cost);
+            nodeList.get(nodeListIndex.get(secondNode)).neighbours.put(firstNode, cost);
+            edges++;
             return true;
         }
         return false;
