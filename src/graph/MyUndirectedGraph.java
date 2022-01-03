@@ -87,8 +87,7 @@ public class MyUndirectedGraph<T> implements UndirectedGraph<T> {
 
     @Override
     public boolean isConnected(T firstNode, T secondNode) {
-        Node<T> first = getNode(firstNode);
-        return first != null && first.neighbours.containsKey(secondNode);
+        return getNode(firstNode) != null && getNode(firstNode).neighbours.containsKey(secondNode);
     }
 
     @Override
