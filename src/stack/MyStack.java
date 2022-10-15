@@ -42,14 +42,14 @@ public class MyStack<T> implements MyStackInterface<T> {
     public boolean isEmpty() {
         return next == 0;
     }
-    
+
     @Override
     public MyStack<T> grow(int newSize) {
         if (arr.length >= newSize) throw new IllegalStateException("Stack must grow larger than size of old stack");
         MyStack<T> copy = new MyStack<>(newSize);
         System.arraycopy(arr, 0, copy.arr, 0, arr.length);
-        copy.next = next;
-        arr = copy.arr;
+        arr = (T[]) new Object[newSize];
+        System.arraycopy(copy.arr, 0, arr, 0, copy.arr.length);
         return this;
     }
 
