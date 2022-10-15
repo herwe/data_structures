@@ -23,3 +23,5 @@
 hs_err_pid*
 /src/UndirectedGraphTest.java
 /src/Main.java
+/.idea/
+/src/stack/MainTest.java

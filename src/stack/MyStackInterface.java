@@ -1,8 +1,10 @@
 package stack;
 
 public interface MyStackInterface<T> {
-    public T push();
-    public T pop();
-    public T peek();
-    public boolean isEmpty();
+    T push(T data);
+    T pop();
+    T peek();
+    int size();
+    boolean isEmpty();
+    MyStack<T> grow(int newSize);
 }
